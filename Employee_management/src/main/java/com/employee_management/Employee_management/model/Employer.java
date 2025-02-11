@@ -1,26 +1,32 @@
 package com.employee_management.Employee_management.model;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "employers")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "employers")
 public class Employer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Employer name is required")
+    @Size(min = 3, message = "Employer name must be at least 3 characters long")
     private String name;
 
-    @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
+    @NotBlank(message = "Company name is required")
+    private String company;
+
+    @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Employee> employees;
 }
